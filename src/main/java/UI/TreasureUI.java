@@ -1,4 +1,4 @@
 package UI;
 
-public class TreasureUI {
+public class TreasureUI implements InterfaceUI {
 }

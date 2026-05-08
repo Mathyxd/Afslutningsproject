@@ -1,4 +1,4 @@
 package UI;
 
-public class CoachUI {
+public class CoachUI implements InterfaceUI {
 }
