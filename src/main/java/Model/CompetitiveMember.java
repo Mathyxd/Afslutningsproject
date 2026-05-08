@@ -7,4 +7,17 @@ public class CompetitiveMember extends Member {
         super(name, age, memberID, activeMember);
         this.discipline = discipline;
     }
+
+    @Override
+    public String getMemberType() {
+        if (!isActiveMember()) {
+            return "PASSIV";
+        } else if (isJunior()) {
+            return "JUNIOR_KONKURRENCE";
+        } else if (isSeniorOld()) {
+            return "SENIOR_KONKURRENCE_RABAT";
+        } else {
+            return "SENIOR_KONKURRENCE";
+        }
+    }
 }

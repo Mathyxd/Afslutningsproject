@@ -48,5 +48,7 @@ public abstract class Member {
         }
     }
 
+    public abstract String getMemberType();
+
     }
 
