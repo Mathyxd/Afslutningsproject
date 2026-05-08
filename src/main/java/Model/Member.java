@@ -1,5 +1,7 @@
 package Model;
 
+import static Validation.InputValidator.*;
+
 public abstract class Member {
     // attributor
     private String name;
@@ -10,6 +12,8 @@ public abstract class Member {
 
     //konstruktør
     public Member(String name, int age, int memberID, boolean activeMember) {
+        validateName(name);
+        validateAge(age);
         this.name = name;
         this.age = age;
         this.memberID = memberID;
