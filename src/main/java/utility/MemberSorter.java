@@ -25,12 +25,13 @@ public class MemberSorter {
         );
     }
 
-    // Sorter efter restance (højeste beløb først+dato????)
-    public static void sortByOverdue(ArrayList<Member> members) {
-        members.sort(
-                Comparator.comparingDouble(Member::getOverdue).reversed()
-        );
-    }
+
+//    // Sorter efter restance (højeste beløb først+dato????)
+//    public static void sortByOverdue(ArrayList<Member> members) {
+//        members.sort(
+//                Comparator.comparingDouble(Member::getOverdue).reversed()
+//        );
+//    }
 }
 
 //Main
