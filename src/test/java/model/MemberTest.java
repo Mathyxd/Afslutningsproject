@@ -34,7 +34,6 @@ class MemberTest {
 
     @Test
     void calculateFee() {
-
     }
 
     @Test
