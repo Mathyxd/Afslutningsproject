@@ -3,8 +3,6 @@ package controller;
 import model.Member;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.stream.Collectors;
 
 public class MemberController {
     // ArrayListe over medlemmer ligger her
@@ -68,20 +66,6 @@ public class MemberController {
             }
         }
         return null;
-    }
-
-    // SORTERING
-        //Sorter efter navn
-    public ArrayList<Member> sortByName() {
-        return memberList.stream()
-                .sorted(Comparator.comparing(Member::getName))
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-        //Sorter efter alder
-    public ArrayList<Member> sortByAge() {
-        return memberList.stream()
-                .sorted(Comparator.comparingInt(Member::getAge))
-                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     // ── Vis Medlemsliste

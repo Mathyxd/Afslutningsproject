@@ -16,11 +16,11 @@ public class CompetitiveMember extends Member {
         if (!isActiveMember()) {
             return "PASSIV";
         } else if (isJunior()) {
-            return "JUNIOR_KONKURRENCE";
+            return "JUNIOR-KONKURRENCE";
         } else if (isSeniorOld()) {
-            return "SENIOR_KONKURRENCE_RABAT";
+            return "SENIOR KONKURRENCE-RABAT";
         } else {
-            return "SENIOR_KONKURRENCE";
+            return "SENIOR-KONKURRENCE";
         }
     }
 }
