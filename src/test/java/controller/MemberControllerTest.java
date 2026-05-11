@@ -26,9 +26,9 @@ class MemberControllerTest {
 
     @Test
     void addMember() {
-            Member m0 = new ExerciseMember("Anna Jensen", 16, 10001, true);
-            Member m1 = new ExerciseMember("Anna Jensen", 17, 10002, false);
-            Member m = new CompetitiveMember("Mathias Jensen", 24, 10003, true, Discipline.MIX_DOUBLE);
+            Member m0 = new ExerciseMember("Anna Jensen", 16, 0, true);
+            Member m1 = new ExerciseMember("Anna Jensen", 17, 0, false);
+            Member m = new CompetitiveMember("Mathias Jensen", 24, 0, true, Discipline.MIX_DOUBLE);
             controller.addMember(m0);
             controller.addMember(m1);
             controller.addMember(m);
@@ -38,43 +38,91 @@ class MemberControllerTest {
         // Tester at medlemmer bliver tilføjet korrekt til listen
 
     @Test
-    void removeMemberByID() {
+    void removeMemberByID() { // Tester at et eksisterende medlem kan fjernes via sit ID
+        Member m = new ExerciseMember("Anna Jensen", 16, 1000, true);
+        controller.addMember(m);
+        int id = m.getMemberID();
 
+        controller.removeMemberByID(id);
+
+        assertEquals(0, controller.size());  // Listen skal være tom efter fjernelse
+    }
+
+    @Test
+        // Tester at et ugyldigt ID ikke kaster en exception eller crasher programmet
+    void removeMemberByID_invalidID() {
+        assertDoesNotThrow(() -> controller.removeMemberByID(9999));
     }
 
     @Test
     void removeMemberByName() {
+        // Tester at et eksisterende medlem kan fjernes via sit navn
+        controller.addMember(new ExerciseMember("Anna Jensen", 16, 1000, true));
+
+        controller.removeMemberByName("Anna Jensen");
+
+        // Listen skal være tom efter fjernelse
+        assertEquals(0, controller.size());
     }
 
     @Test
     void findByID() {
+        Member m = new ExerciseMember("Peter Madsen", 34, 1000, false);
+        controller.addMember(m);
+        int id = m.getMemberID();
+
+        Member found = controller.findByID(id);
+
+        // Det fundne medlem skal være det samme som det tilføjede
+        assertNotNull(found);
+        assertEquals("Peter Madsen", found.getName());
+    }
+
+    @Test
+    void findByID_notFound() { // Tester at findByID returnerer null når ID ikke findes
+        Member found = controller.findByID(9999);
+        assertNull(found);
     }
 
     @Test
     void findByName() {
+        controller.addMember(new ExerciseMember("Lone Christensen", 67, 2000, false));
+
+        Member found = controller.findByName("Lone Christensen");
+
+        assertNotNull(found);
+        assertEquals("Lone Christensen", found.getName());
     }
 
     @Test
-    void sortByName() {
-    }
+    void findByName_caseInsensitive() { // Tester at findByName ignorerer store/små bogstaver
+        controller.addMember(new ExerciseMember("Lone Christensen", 67, 2000, false));
 
-    @Test
-    void sortByAge() {
+        Member found = controller.findByName("lone christensen");
+
+        assertNotNull(found);
     }
 
     @Test
     void printAllMembers() {
+        assertDoesNotThrow(() -> controller.printAllMembers());
+
+    // Tester at printAllMembers ikke kaster en exception når der er medlemmer
+        controller.addMember(new ExerciseMember("Anna", 34, 0, true));
+        assertDoesNotThrow(() -> controller.printAllMembers());
     }
+
+/*  Senere tests måske?
 
     @Test
     void generateID() {
     }
 
-    @Test
+    @Test  -
     void getAll() {
     }
 
-    @Test
+    @Test  - For at se at programmet korrekt viser hvor mange medlemmer der er i klubben
     void size() {
-    }
+    }*/
 }
