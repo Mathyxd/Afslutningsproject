@@ -7,6 +7,9 @@ public class CompetitiveMember extends Member {
         super(name, age, memberID, activeMember);
         this.discipline = discipline;
     }
+    public Discipline getDiscipline() {return discipline;}
+    public void setDiscipline(Discipline discipline) {this.discipline = discipline;}
+
 
     @Override
     public String getMemberType() {
