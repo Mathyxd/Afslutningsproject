@@ -25,3 +25,4 @@ class InputValidatorTest {
                 () -> new ExerciseMember("Alice", -6, 123, false));
     }
 }
+
