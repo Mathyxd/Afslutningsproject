@@ -1,5 +1,7 @@
 package model;
 
+import controller.MemberController;
+
 import static validation.InputValidator.*;
 
 public abstract class Member {
@@ -89,7 +91,7 @@ public abstract class Member {
 
     @Override
     public String toString() {
-        return memberID + " - " + name + " - " + age + " år - " + fee + " kr.";
+        return memberID + " - " + name + " - " + age + " år - " + getMemberType() + " - " + fee + " kr.";
     }
 }
 

@@ -15,4 +15,10 @@ public class InputValidator {
             throw new ValidationException("Alder skal være over 0");
         }
     }
+
+    public static void validatID(int memberID){
+        if (memberID < 1000){
+            throw new ValidationException("Medlems ID'et skal være mindst 1000");
+        }
+    }
 }

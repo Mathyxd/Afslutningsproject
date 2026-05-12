@@ -2,14 +2,16 @@ package app;
 
 import ui.*;
 
-import java.util.Scanner;
-
 public class SmashApp {
+    static UserInput userInput = new UserInput();
+
     static void main() {
 
+        // menu kan i fremtiden skrives pænere ud
         System.out.println("Vil du se mulighederne for 1. formanden, 2. kassereren eller 3. træneren?");
-        Scanner scanner = new Scanner(System.in);
-        int input = Integer.parseInt(scanner.nextLine());
+
+        int limit = 3;
+        int input = userInput.inputInt(limit);
 
         switch (input){
             case 1:
