@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Payment {
     private double fee;
     private LocalDate dueDate;
-    private LocalDate dayPaid;
+    private LocalDate dayPaid; // Bør sættes når der betales. Nok af en metode i PaymentController
     private PaymentStatus status;
     private Member member;
 
@@ -56,5 +56,9 @@ public class Payment {
 
     public void setStatus(PaymentStatus status){
         this.status = status;
+    }
+
+    public void setMember(Member member){
+        this.member = member;
     }
 }
