@@ -141,7 +141,6 @@ public class MemberController {
     public void printAllMembers() {
         if (memberList.isEmpty()) {
             System.out.println("Ingen medlemmer registreret endnu.");
-            return;
         } else {
 
             System.out.println("\n── Medlemsliste (" + memberList.size() + " medlemmer) ──");
