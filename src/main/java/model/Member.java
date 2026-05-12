@@ -1,7 +1,8 @@
 package model;
 
-import controller.MemberController;
+import controller.MemberController.*;
 
+import static controller.MemberController.generateID;
 import static validation.InputValidator.*;
 
 public abstract class Member {
@@ -18,7 +19,7 @@ public abstract class Member {
         validateAge(age);
         this.name = name;
         this.age = age;
-        this.memberID = memberID;
+        this.memberID = generateID();
         this.activeMember = activeMember;
         this.fee = calculateFee();
     }

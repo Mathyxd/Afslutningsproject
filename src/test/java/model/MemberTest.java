@@ -34,11 +34,19 @@ class MemberTest {
 
     @Test
     void calculateFee() {
+        assertEquals(250, new ExerciseMember("Barney", 30,0,false).calculateFee());
+        assertEquals(800, new ExerciseMember("Barney", 17,0,true).calculateFee());
+        assertEquals(1500 * 0.75, new ExerciseMember("Barney", 61,0,true).calculateFee());
+        assertEquals(1500, new ExerciseMember("Barney", 30,0,true).calculateFee());
 
     }
 
     @Test
     void getMemberType() {
+        assertEquals("PASSIV",new ExerciseMember("Jarl", 35, 1, false).getMemberType());
+        assertEquals("Junior_MOTIONIST",new ExerciseMember("Jarl", 15, 1, true).getMemberType());
+        assertEquals("SENIOR_MOTIONIST_RABAT",new ExerciseMember("Jarl", 99, 1, true).getMemberType());
+        assertEquals("SENIOR_MOTIONIST",new ExerciseMember("Jarl", 25, 1, true).getMemberType());
     }
 
 }
