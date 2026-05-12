@@ -48,6 +48,11 @@ public class MemberController {
                 + " (ID: " + found.getMemberID() + ")");
     }
 
+    // Ændrer et eksisterende medlem
+    public void changeMember(Member member){
+
+    }
+
     // Søgning
             //søgning udfra MedlemsID
     public Member findByID(int memberID) {
