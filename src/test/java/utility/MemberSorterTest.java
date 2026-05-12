@@ -20,7 +20,7 @@ class MemberSorterTest {
         testArrayList.add(B);
         testArrayList.add(A);
         testArrayList.add(C);
-        MemberSorter.sortByName(testArrayList);
+        MemberSorter.sortByName(testArrayList);//MemberSorter er den klasse hvor vi har metoden vi kalder og tester
         assertEquals("Celia", testArrayList.get(1).getName());
     }
 
