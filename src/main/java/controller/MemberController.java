@@ -1,13 +1,21 @@
 package controller;
 
+import model.CompetitiveMember;
+import model.Discipline;
+import model.ExerciseMember;
 import model.Member;
+import ui.UserInput;
 
 import java.util.ArrayList;
+
+import static validation.InputValidator.validateAge;
+import static validation.InputValidator.validateName;
 
 public class MemberController {
     // ArrayListe over medlemmer ligger her
     private ArrayList<Member> memberList = new ArrayList<>();
     private static int nextID = 1000;
+    UserInput userInput;
 
     // Opret Medlem
 
@@ -68,12 +76,71 @@ public class MemberController {
         return null;
     }
 
+    // Ændring af et eksisterende medlem
+    public void changeName(Member member){
+        String name = userInput.inputString();
+        validateName(name);
+        System.out.println("Vil du ændrer navnet fra " + member.getName() + " til " + name + " ?");
+        boolean confirm = userInput.inputBool();
+        if (confirm) {
+            member.setName(name);
+            System.out.println(member.getMemberID() + " hedder nu " + member.getName());
+        } else {
+            System.out.println("Navnet blev ikke ændret.");
+        }
+    }
+
+    public void changeAge(Member member){
+        int age = userInput.inputInt(120);
+        validateAge(age);
+        System.out.println("Vil du gerne ændre alder fra " + member.getAge() + " til " + age + " ?");
+        boolean confirm = userInput.inputBool();
+        if (confirm) {
+            member.setAge(age);
+            System.out.println(member.getMemberID() + "s alder er nu " + member.getAge());
+        } else {
+            System.out.println("Alderen blev ikke ændret.");
+        }
+    }
+
+    public void changeStatus(Member member){
+        boolean status = member.isActiveMember();
+        member.setActiveMember(!status); // sætter boolean til det omvendte af hvad den var før.
+        System.out.println(member.getName() + "s status ændret til " + member.isActiveMember());
+    }
+
+    // opretter et nyt Member, med de samme værdier som det eksisterende. Herefter fjernes det gamel og det
+    // nye tilføjes. Ved konkurrencespiller skal disciplin også tilføjes.
+
+    public void changeType(Member member){
+        if (member instanceof ExerciseMember){
+
+            System.out.println("Hvilken disciplin spiller konkurrencespilleren? Single, double eller mix double.");
+            Discipline discipline = Discipline.DOUBLE; // TEMPORARY! Det skal ÆNDRES!
+
+            Member changedMember = new CompetitiveMember(member.getName(), member.getAge(),
+                    member.getMemberID(), member.isActiveMember(), discipline);
+
+            removeMemberByID(member.getMemberID());
+            addMember(changedMember);
+            System.out.println("Medlemstype ændret til konkurrencespiller.");
+
+        } else if (member instanceof CompetitiveMember){
+
+            Member changedMember = new ExerciseMember(member.getName(), member.getAge(),
+                                         member.getMemberID(), member.isActiveMember());
+
+            removeMemberByID(member.getMemberID());
+            addMember(changedMember);
+            System.out.println("Medlemstype ændret til motionist.");
+        }
+    }
+
     // ── Vis Medlemsliste
 
     public void printAllMembers() {
         if (memberList.isEmpty()) {
             System.out.println("Ingen medlemmer registreret endnu.");
-            return;
         } else {
 
             System.out.println("\n── Medlemsliste (" + memberList.size() + " medlemmer) ──");
