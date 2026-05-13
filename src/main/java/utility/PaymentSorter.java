@@ -20,11 +20,16 @@ public class PaymentSorter {
                 Comparator.comparingDouble(Payment::getFee));
     }
 
-    // Sorterer medlemmer i restance efter navn
-    public static void sortOverdueByName(ArrayList<Payment> members) {
-        Collections.sort(members,
-                Comparator.comparing(Payment::getMember));
-    }
+//    // Sorterer medlemmer i restance efter navn
+//    public static void sortOverdueByName(ArrayList<Payment> members) {
+//        Collections.sort(members,
+//                Comparator.comparing(Payment::getMember));
+//    }
+//    // Sorterer betalinger efter medlemsnavn ifølge chatten
+//    public static void sortOverdueByName(ArrayList<Payment> payments) {
+//        Collections.sort(payments,
+//                Comparator.comparing(payment ->
+//                        payment.getMember().getName()));
 
     //  Sortér efter dato (ældste først) Extra , står ikke i opgaven
     public static void sortByDate(ArrayList<Payment> payments) {
