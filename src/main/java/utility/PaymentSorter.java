@@ -30,6 +30,5 @@ public class PaymentSorter {
     public static void sortByDate(ArrayList<Payment> payments) {
         Collections.sort(payments,
                 Comparator.comparing(Payment::getDueDate));
-//  .reversed().reverses the order, so highest fee comes first
     }
-}
+//  .reversed().reverses the order, so highest fee comes first

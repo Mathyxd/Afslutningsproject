@@ -5,7 +5,6 @@ import model.PaymentStatus;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -14,7 +13,7 @@ import java.util.List;
  */
 public class PaymentController {
 
-    private List<Payment> payments = new ArrayList<>();
+    private final ArrayList<Payment> payments = new ArrayList<>();
 
     /**
      * Opretter en ny betaling for et medlem og tilføjer den til betalingslisten.
@@ -35,8 +34,8 @@ public class PaymentController {
      * Hver rate forfalder hver 4. måned på samme dag i måneden.
      * Kontingentet beregnes automatisk og fordeles ligeligt.
      *
-     * @param member    medlemmet der oprettes betalinger for
-     * @param joinDate  datoen medlemmet meldte sig ind
+     * @param member   medlemmet der oprettes betalinger for
+     * @param joinDate datoen medlemmet meldte sig ind
      */
     public void createInstallmentPayments(Member member, LocalDate joinDate) {
         int installments = 3;
@@ -82,7 +81,7 @@ public class PaymentController {
      *
      * @return en liste af alle betalinger
      */
-    public List<Payment> getAllPayments() {
+    public ArrayList<Payment> getAllPayments() {
         return payments;
     }
 }
