@@ -15,7 +15,6 @@ class MemberControllerTest {
 
         // En frisk MemberController oprettes før HVER enkelt test
         // Vi behøver ikke at lave MemberController = new MemberCortroller i hver test.
-        //  + så testene ikke påvirker hinanden
 
     private MemberController controller;
 
