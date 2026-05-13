@@ -47,10 +47,6 @@ public abstract class Member {
         this.age = age;
     }
 
-    public void setMemberID(int memberID) {
-        this.memberID = memberID;
-    }
-
     public void setFee(double fee) {
         this.fee = fee;
     }
