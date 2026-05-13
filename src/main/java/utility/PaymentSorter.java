@@ -11,25 +11,25 @@ public class PaymentSorter {
     //static fordi de returner ikke noget, metodene skal indkaldes i controler
     public static void sortByPayment(ArrayList<Payment> payments) {
         Collections.sort(payments,
-                Comparator.comparingDouble(Payment::getExpectedPayment));// :: kaldes en method reference i Java.
+                Comparator.comparingDouble(Payment::getFee));// :: kaldes en method reference i Java.
     }
 
     // Sorterer medlemmer i restance efter beløb
     public static void sortOverdueByPayment(ArrayList<Payment> payments) {
         Collections.sort(payments,
-                Comparator.comparingDouble(Payment::getExpectedPayment));
+                Comparator.comparingDouble(Payment::getFee));
     }
 
     // Sorterer medlemmer i restance efter navn
     public static void sortOverdueByName(ArrayList<Payment> members) {
         Collections.sort(members,
-                Comparator.comparing(Payment::getName));
+                Comparator.comparing(Payment::getMember));
     }
 
     //  Sortér efter dato (ældste først) Extra , står ikke i opgaven
     public static void sortByDate(ArrayList<Payment> payments) {
         Collections.sort(payments,
-                Comparator.comparing(Payment::getPaymentDate));
+                Comparator.comparing(Payment::getDueDate));
 //  .reversed().reverses the order, so highest fee comes first
     }
 }
