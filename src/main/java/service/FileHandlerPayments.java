@@ -78,4 +78,39 @@ public class FileHandlerPayments implements FileHandler {
         }
         return payment;
     }
+
+    @Override
+    public void saveToFile() throws IOException {
+        long startTime = System.nanoTime();
+
+        File file = new File(FILE_PATH);
+        if (file.getParentFile() != null) {
+            file.getParentFile().mkdirs();
+        }
+
+        List<Payment> payments = paymentController.getAllPayments();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+
+            writer.write("memberID" + DELIMITER + "fee" + DELIMITER + "status" + DELIMITER
+                    + "dueDate" + DELIMITER + "dayPaid");
+            writer.newLine();
+            for (Payment p : payments) {
+                writer.write(formatPayment(p));
+                writer.newLine();
+            }
+        }
+
+        long elapsed = System.nanoTime() - startTime;
+        System.out.printf("Gemt %d betalinger på %.2f ms (buffered)%n", payments.size(), elapsed / 1_000_000.0);
+    }
+    private String formatPayment(Payment p) {
+        String dayPaid = (p.getDayPaid() != null) ? p.getDayPaid().toString() : "";
+        return p.getMember().getMemberID() + DELIMITER
+                + p.getFee()               + DELIMITER
+                + p.getStatus()            + DELIMITER
+                + p.getDueDate()           + DELIMITER
+                + dayPaid;
+    }
 }
+
