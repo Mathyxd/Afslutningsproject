@@ -120,7 +120,6 @@ public class FileHandlerMembers implements FileHandler {
     private String formatMember(Member m) {
         String category = (m instanceof  CompetitiveMember) ? "COMPETITVE" : "EXERCISE";
         String discipline = "";
-// discpline til konkurrence spillere
         if (m instanceof  CompetitiveMember) {
             discipline = ((CompetitiveMember) m).getDiscipline().name();
         }
