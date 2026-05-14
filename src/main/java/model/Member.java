@@ -47,10 +47,6 @@ public abstract class Member {
         this.age = age;
     }
 
-    public void setFee(double fee) {
-        this.fee = fee;
-    }
-
     //metoder
     public boolean isActiveMember() {
         return activeMember;
