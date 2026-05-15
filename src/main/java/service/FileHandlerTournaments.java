@@ -56,4 +56,28 @@ public class FileHandlerTournaments implements FileHandler {
         long elapsed = System.nanoTime() - startTime;
         System.out.printf("Loaded %d turneringer (%d fejl) på %.2f ms (buffered)%n", loaded, errors, elapsed / 1_000_000.0);
     }
+
+    private void parseLine(String line) {
+        String[] parts = line.split(DELIMITER, -1);
+
+        if (parts.length <6) {
+            throw new IllegalArgumentException("For få kolonner (" + parts.length + ")");
+        }
+        int memberID = Integer.parseInt(parts[0].trim());
+        String tournamentName = parts[1].trim();
+        int ranking = Integer.parseInt(parts[2].trim());
+        String matchResult = parts[3].trim();
+        LocalDate date = LocalDate.parse(parts[4].trim());
+        Discipline discipline = Discipline.valueOf(parts[5].trim().toUpperCase());
+
+        Member member = memberController.findByID(memberID);
+        if (member == null) {
+            throw new IllegalArgumentException("Ingen medlem fundet med ID: " + memberID);
+        }
+        if (!(member instanceof CompetitiveMember)) {
+            throw new IllegalArgumentException("Medlem med ID " + memberID + " er ikke en konkurrencespiller");
+        }
+        tournamentController.createTournament((CompetitiveMember) member, tournamentName, ranking, matchResult, date, discipline);
+    }
+
 }
