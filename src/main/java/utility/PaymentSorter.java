@@ -1,25 +1,31 @@
 package utility;
+
 import model.Payment;
+import model.Payments;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ArrayList;
 
 public class PaymentSorter {
 
     // Sorterer forventede indbetalinger efter beløb
-    //static fordi de returner ikke noget, metodene skal indkaldes i controler
-    public static void sortByPayment(ArrayList<Payment> payments) {
-        Collections.sort(payments,
-                Comparator.comparingDouble(Payment::getFee));// :: kaldes en method reference i Java.
-    }
-
-    // Sorterer medlemmer i restance efter beløb
-    public static void sortOverdueByPayment(ArrayList<Payment> payments) {
-        Collections.sort(payments,
+    // static fordi de returnerer ikke noget, metoderne skal indkaldes i controller
+    public static void sortByPayment(Payments payments) {
+        Collections.sort(payments.getPayments(),
                 Comparator.comparingDouble(Payment::getFee));
     }
 
+    // Sorterer medlemmer i restance efter beløb
+    public static void sortOverdueByPayment(Payments payments) {
+        Collections.sort(payments.getOverduePayments(),
+                Comparator.comparingDouble(Payment::getFee));
+    }
+
+    // Sorterer medlemmer i restance efter navn
+    public static void sortOverdueByName(Payments payments) {
+        Collections.sort(payments.getOverduePayments(),
+                Comparator.comparing(Payment::getMember));
+    }
 //    // Sorterer medlemmer i restance efter navn
 //    public static void sortOverdueByName(ArrayList<Payment> members) {
 //        Collections.sort(members,
@@ -31,9 +37,10 @@ public class PaymentSorter {
 //                Comparator.comparing(payment ->
 //                        payment.getMember().getName()));
 
-    //  Sortér efter dato (ældste først) Extra , står ikke i opgaven
-    public static void sortByDate(ArrayList<Payment> payments) {
-        Collections.sort(payments,
+    // Sorterer efter dato (ældste først) - Extra, står ikke i opgaven
+    public static void sortByDate(Payments payments) {
+        Collections.sort(payments.getPayments(),
                 Comparator.comparing(Payment::getDueDate));
     }
-//  .reversed().reverses the order, so highest fee comes first
+    // .reversed() kan tilføjes for omvendt rækkefølge fx højeste beløb først
+}

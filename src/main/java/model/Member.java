@@ -3,13 +3,27 @@ package model;
 import static controller.MemberController.generateID;
 import static validation.InputValidator.*;
 
-public abstract class Member {
+public abstract class Member implements Comparable<Member> {
     // attributor
     private String name;
     private int age;
     private int memberID;
     private boolean activeMember;
     private double fee;
+
+    /**
+     * Sammenligner dette medlem med et andet medlem alfabetisk efter navn.
+     * Bruges til sortering af betalinger efter medlemsnavn i PaymentSorter.
+     *
+     * @param other medlemmet der sammenlignes med
+     * @return et negativt tal hvis dette members navn kommer før det andet, ->
+     * ...nul hvis navnene er ens,
+     * ...et positivt tal hvis dette members navn kommer efter det andet
+     */
+    @Override
+    public int compareTo (Member other){
+        return this.name.compareTo(other.name);
+    }
 
     //konstruktør
     public Member(String name, int age, int memberID, boolean activeMember) {
@@ -78,7 +92,6 @@ public abstract class Member {
     }
 
     public abstract String getMemberType();
-
 
     @Override
     public String toString() {

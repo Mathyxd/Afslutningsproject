@@ -1,8 +1,6 @@
 package controller;
 
-import model.Member;
-import model.Payment;
-import model.PaymentStatus;
+import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,10 +9,12 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Dækker: oprettelse af betalinger, ratebetaling, registrering, sortering og hentning af restancer
 class PaymentControllerTest {
 
     private PaymentController controller;
     private Member member;
+    private Member juniorMember;
 
     @BeforeEach
     void setUp() {
@@ -25,10 +25,15 @@ class PaymentControllerTest {
                 return "Senior";
             }
         };
+        juniorMember = new Member("Sofie Hansen", 15, 2, true) {
+            @Override
+            public String getMemberType() {
+                return "Junior";
+            }
+        };
     }
 
     // --- createPayment ---
-    // Testes da det er primær måde at oprette betalinger på
 
     @Test
     void createPaymentAddsToList() {
@@ -49,7 +54,6 @@ class PaymentControllerTest {
     }
 
     // --- createInstallmentPayments ---
-    // Testes grundigt da den indeholder kompleks logik med datoer og beløb
 
     @Test
     void createInstallmentPaymentsCreatesThreePayments() {
@@ -79,7 +83,6 @@ class PaymentControllerTest {
     }
 
     // --- registerPayment ---
-    // Testes da den opdaterer status og dayPaid samtidigt
 
     @Test
     void registerPaymentSetsStatusToPaid() {
@@ -96,7 +99,6 @@ class PaymentControllerTest {
     }
 
     // --- getOverduePayments ---
-    // Testes grundigt da kassereren er afhængig af denne oversigt
 
     @Test
     void getOverduePaymentsReturnsOnlyOverdue() {
@@ -117,8 +119,72 @@ class PaymentControllerTest {
         assertEquals(0, controller.getOverduePayments().size());
     }
 
+    // --- getOverduePaymentsSortedByFee ---
+
+    @Test
+    void getOverduePaymentsSortedByFeeReturnsSortedList() {
+        // Senior betaler mere end junior - junior skal komme først
+        controller.createPayment(member, LocalDate.now().minusDays(1));
+        controller.createPayment(juniorMember, LocalDate.now().minusDays(1));
+
+        ArrayList<Payment> sorted = controller.getOverduePaymentsSortedByFee();
+        assertTrue(sorted.get(0).getFee() <= sorted.get(1).getFee());
+    }
+
+    // --- getOverduePaymentsSortedByName ---
+
+    @Test
+    void getOverduePaymentsSortedByNameReturnsSortedList() {
+        // Anders kommer før Sofie alfabetisk
+        controller.createPayment(member, LocalDate.now().minusDays(1));
+        controller.createPayment(juniorMember, LocalDate.now().minusDays(1));
+
+        ArrayList<Payment> sorted = controller.getOverduePaymentsSortedByName();
+        assertTrue(sorted.get(0).getMember().getName()
+                .compareTo(sorted.get(1).getMember().getName()) <= 0);
+    }
+
+    // --- getAllPaymentsSortedByFee ---
+
+    @Test
+    void getAllPaymentsSortedByFeeReturnsSortedList() {
+        // Senior betaler mere end junior - junior skal komme først
+        controller.createPayment(member, LocalDate.now().plusDays(30));
+        controller.createPayment(juniorMember, LocalDate.now().plusDays(30));
+
+        ArrayList<Payment> sorted = controller.getAllPaymentsSortedByFee();
+        assertTrue(sorted.get(0).getFee() <= sorted.get(1).getFee());
+    }
+
+    // --- getAllPaymentsSortedByDate ---
+
+    @Test
+    void getAllPaymentsSortedByDateReturnsSortedList() {
+        // Ældste dato skal komme først
+        controller.createPayment(member, LocalDate.now().plusDays(60));
+        controller.createPayment(juniorMember, LocalDate.now().plusDays(30));
+
+        ArrayList<Payment> sorted = controller.getAllPaymentsSortedByDate();
+        assertTrue(sorted.get(0).getDueDate().isBefore(sorted.get(1).getDueDate()));
+    }
+
+    // --- getPaymentsForMember ---
+
+    @Test
+    void getPaymentsForMemberReturnsOnlyMembersPayments() {
+        controller.createPayment(member, LocalDate.now().plusDays(30));
+        controller.createPayment(juniorMember, LocalDate.now().plusDays(30));
+
+        assertEquals(1, controller.getPaymentsForMember(member).size());
+        assertEquals(1, controller.getPaymentsForMember(juniorMember).size());
+    }
+
+    @Test
+    void getPaymentsForMemberReturnsEmptyListWhenNoPayments() {
+        assertEquals(0, controller.getPaymentsForMember(member).size());
+    }
+
     // --- getAllPayments ---
-    // Testes da kassereren bruger den til fuld betalingsoversigt
 
     @Test
     void getAllPaymentsIsEmptyInitially() {

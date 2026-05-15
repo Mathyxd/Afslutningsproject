@@ -1,22 +1,21 @@
 package controller;
-import model.Member;
-import model.Payment;
-import model.PaymentStatus;
+
+import model.*;
+import utility.PaymentSorter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-
 /**
  * Controller ansvarlig for håndtering af betalinger i systemet.
- * Håndterer oprettelse, registrering og hentning af betalinger.
+ * Håndterer oprettelse, registrering, sortering og hentning af betalinger.
  */
 public class PaymentController {
 
-    private final ArrayList<Payment> payments = new ArrayList<>();
+    private final Payments payments = new Payments();
 
     /**
-     * Opretter en ny betaling for et medlem og tilføjer den til betalingslisten.
+     * Opretter en ny betaling for et medlem og tilføjer den til betalingsoversigten.
      * Betalingsstatus sættes som standard til PENDING.
      *
      * @param member  medlemmet tilknyttet betalingen
@@ -25,7 +24,7 @@ public class PaymentController {
      */
     public Payment createPayment(Member member, LocalDate dueDate) {
         Payment payment = new Payment(dueDate, PaymentStatus.PENDING, member);
-        payments.add(payment);
+        payments.addPayment(payment);
         return payment;
     }
 
@@ -45,10 +44,9 @@ public class PaymentController {
             LocalDate dueDate = joinDate.plusMonths(4 * i);
             Payment payment = new Payment(dueDate, PaymentStatus.PENDING, member);
             payment.setFee(installmentFee);
-            payments.add(payment);
+            payments.addPayment(payment);
         }
     }
-
 
     /**
      * Registrerer en betaling som betalt ved at sætte betalingsdatoen til dags dato.
@@ -61,19 +59,62 @@ public class PaymentController {
     }
 
     /**
-     * Henter alle betalinger der er i restance.
-     * En betaling er i restance hvis den er PENDING og forfaldsdatoen er overskredet.
+     * Henter alle betalinger i restance sorteret efter beløb.
+     *
+     * @return en sorteret liste af betalinger i restance
+     */
+    public ArrayList<Payment> getOverduePaymentsSortedByFee() {
+        PaymentSorter.sortOverdueByPayment(payments);
+        return payments.getOverduePayments();
+    }
+
+    /**
+     * Henter alle betalinger i restance sorteret efter navn.
+     *
+     * @return en sorteret liste af betalinger i restance
+     */
+    public ArrayList<Payment> getOverduePaymentsSortedByName() {
+        PaymentSorter.sortOverdueByName(payments);
+        return payments.getOverduePayments();
+    }
+
+    /**
+     * Henter alle betalinger sorteret efter beløb.
+     *
+     * @return en sorteret liste af alle betalinger
+     */
+    public ArrayList<Payment> getAllPaymentsSortedByFee() {
+        PaymentSorter.sortByPayment(payments);
+        return payments.getPayments();
+    }
+
+    /**
+     * Henter alle betalinger sorteret efter dato.
+     *
+     * @return en sorteret liste af alle betalinger efter dato
+     */
+    public ArrayList<Payment> getAllPaymentsSortedByDate() {
+        PaymentSorter.sortByDate(payments);
+        return payments.getPayments();
+    }
+
+    /**
+     * Henter alle betalinger tilknyttet et specifikt medlem.
+     *
+     * @param member medlemmet hvis betalinger hentes
+     * @return en liste af betalinger tilknyttet medlemmet
+     */
+    public ArrayList<Payment> getPaymentsForMember(Member member) {
+        return payments.getPaymentsForMember(member);
+    }
+
+    /**
+     * Henter alle betalinger i restance.
      *
      * @return en liste af betalinger i restance
      */
     public ArrayList<Payment> getOverduePayments() {
-        ArrayList<Payment> overdue = new ArrayList<>();
-        for (Payment p : payments) {
-            if (p.isOverdue()) {
-                overdue.add(p);
-            }
-        }
-        return overdue;
+        return payments.getOverduePayments();
     }
 
     /**
@@ -82,6 +123,6 @@ public class PaymentController {
      * @return en liste af alle betalinger
      */
     public ArrayList<Payment> getAllPayments() {
-        return payments;
+        return payments.getPayments();
     }
 }
