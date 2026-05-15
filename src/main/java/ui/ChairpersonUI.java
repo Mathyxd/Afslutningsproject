@@ -2,6 +2,7 @@ package ui;
 
 import controller.MemberController;
 import model.*;
+import service.*;
 
 import java.util.*;
 
@@ -10,9 +11,10 @@ import static validation.InputValidator.*;
 public class ChairpersonUI implements InterfaceUI {
     static UserInput userInput = new UserInput();
     static MemberController memberController = new MemberController();
+    static FileHandlerMembers fileHandlerMembers = new FileHandlerMembers(memberController);
 
     public static void runProgram() {
-
+        fileHandlerMembers.loadFromFile();
         boolean isRunning = true;
         while (isRunning) {
             System.out.println("Vælg en mulighed. 1. Vis alle medlemmer. 2. Tilføj et medlem. 3. Ændr et medlem.");
@@ -34,6 +36,7 @@ public class ChairpersonUI implements InterfaceUI {
 
                     Member member = createMember();
                     memberController.addMember(member);
+                    fileHandlerMembers.saveToFile();
                     break;
                 case 3: // Ændr et medlem
                     changeMember();

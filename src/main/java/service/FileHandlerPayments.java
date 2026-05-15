@@ -9,8 +9,8 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.List;
 
-public class FileHandlerPayments implements FileHandler {
-    private static final String FILE_PATH = "src/main/java/csv/payments/payments.csv";
+public class FileHandlerPayments {
+   /* private static final String FILE_PATH = "src/main/java/csv/payments/payments.csv";
     private static final String DELIMITER = ";";
     private PaymentController paymentController;
     private MemberController memberController;
@@ -20,7 +20,7 @@ public class FileHandlerPayments implements FileHandler {
         this.memberController = memberController;
     }
     @Override
-    public void loadFromFile() throws IOException {
+    public void loadFromFile() {
         long startTime = System.nanoTime();
 
         File file = new File(FILE_PATH);
@@ -80,7 +80,7 @@ public class FileHandlerPayments implements FileHandler {
     }
 
     @Override
-    public void saveToFile() throws IOException {
+    public void saveToFile() {
         long startTime = System.nanoTime();
 
         File file = new File(FILE_PATH);
@@ -112,5 +112,7 @@ public class FileHandlerPayments implements FileHandler {
                 + p.getDueDate()           + DELIMITER
                 + dayPaid;
     }
+    */
+
 }
 

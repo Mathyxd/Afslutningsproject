@@ -8,18 +8,16 @@ import java.util.ArrayList;
 
 public class FileHandlerMembers implements FileHandler {
 
-    // Sti til CSV-filen og DELIMITER der adskiller kolonnerne
-    private static final String FILE_PATH = "src/main/java/csv/members/members.csv";
+    private static final String FILE_PATH = "csv/members.csv";
     private static final String DELIMITER = ";";
     private MemberController memberController;
-
 
     public FileHandlerMembers(MemberController memberController) {
         this.memberController = memberController;
     }
 
-    // Metode der læser alle medlemmer fra CSV-filen og tilføjer dem til memberController
-    public void loadFromFile() throws IOException {
+    // Læser alle medlemmer fra CSV-filen ved opstart
+    public void loadFromFile() {
         long startTime = System.nanoTime();
 
         File file = new File(FILE_PATH);
@@ -36,6 +34,7 @@ public class FileHandlerMembers implements FileHandler {
             boolean firstLine = true;
 
             while ((line = reader.readLine()) != null) {
+                // Spring header-linjen over
                 if (firstLine) {
                     firstLine = false;
                     continue;
@@ -47,15 +46,18 @@ public class FileHandlerMembers implements FileHandler {
                     memberController.addMember(member);
                     loaded++;
                 } catch (Exception e) {
-                    System.out.println("Fejl på linje: \"" + line + "\" ->" + e.getMessage());
+                    System.out.println("Fejl på linje: \"" + line + "\" -> " + e.getMessage());
                     errors++;
                 }
             }
+        } catch (IOException e) {
+            System.out.println("Kunne ikke indlæse members.csv: " + e.getMessage());
         }
-        // Viser hvor lang tid indlæsningen tog
+
         long elapsed = System.nanoTime() - startTime;
-        System.out.printf("loaded %d medlemmer (%d fejl) på %.2f ms (buffered)%n", loaded, errors, elapsed / 1_000_000.0);
+        System.out.printf("Loaded %d medlemmer (%d fejl) på %.2f ms (buffered)%n", loaded, errors, elapsed / 1_000_000.0);
     }
+
     // Omdanner én CSV-linje til et Member-objekt
     private Member parseLine(String line) {
         String[] parts = line.split(DELIMITER, -1);
@@ -63,15 +65,16 @@ public class FileHandlerMembers implements FileHandler {
         if (parts.length < 5) {
             throw new IllegalArgumentException("For få kolonner (" + parts.length + ")");
         }
-        int    memberID      = Integer.parseInt(parts[0].trim());
+
+        int memberID         = Integer.parseInt(parts[0].trim());
         String name          = parts[1].trim();
-        int    age           = Integer.parseInt(parts[2].trim());
+        int age              = Integer.parseInt(parts[2].trim());
         boolean activeMember = Boolean.parseBoolean(parts[3].trim());
         String category      = parts[4].trim().toUpperCase();
 
         switch (category) {
             case "COMPETITIVE": {
-                // Konkurrencespillere skal have en discipline
+                // Konkurrencespillere skal have en disciplin
                 if (parts.length < 6 || parts[5].isBlank()) {
                     throw new IllegalArgumentException("COMPETITIVE-medlem mangler disciplin");
                 }
@@ -85,12 +88,12 @@ public class FileHandlerMembers implements FileHandler {
                 throw new IllegalArgumentException("Ukendt kategori: " + category);
         }
     }
-    // Metode der gemmer alle medlemmer fra memberController til CSV-filen
-    public void saveToFile() throws IOException {
+
+    // Gemmer alle medlemmer til CSV-filen
+    public void saveToFile() {
         long startTime = System.nanoTime();
 
         File file = new File(FILE_PATH);
-        // Opretter en mappe hvis der ikke er en
         if (file.getParentFile() != null) {
             file.getParentFile().mkdirs();
         }
@@ -98,36 +101,39 @@ public class FileHandlerMembers implements FileHandler {
         ArrayList<Member> members = memberController.getAll();
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            // Skriver header-linjen først
-            writer.write("memberID" + DELIMITER
-                    + "name"   + DELIMITER
-                    + "age"    + DELIMITER
-                    + "activeMember" + DELIMITER
-                    + "memberCategory" + DELIMITER
-                    + "discipline");
+            // Skriv header-linjen først
+            writer.write("memberID" + DELIMITER + "name" + DELIMITER + "age" + DELIMITER
+                    + "activeMember" + DELIMITER + "memberCategory" + DELIMITER + "discipline");
             writer.newLine();
-// Skriver en medlem per linje
+
+            // Skriv ét medlem per linje
             for (Member m : members) {
                 writer.write(formatMember(m));
                 writer.newLine();
             }
+        } catch (IOException e) {
+            System.out.println("Kunne ikke gemme members.csv: " + e.getMessage());
         }
-        // Viser hvor lang tid saving tog
+
         long elapsed = System.nanoTime() - startTime;
         System.out.printf("Gemt %d medlemmer på %.2f ms (buffered)%n", members.size(), elapsed / 1_000_000.0);
     }
-    // Omdanner et Member-objekt til en CSV-linje klar til at gemme
+
+    // Omdanner et Member-objekt til en CSV-linje
     private String formatMember(Member m) {
-        String category = (m instanceof  CompetitiveMember) ? "COMPETITVE" : "EXERCISE";
+        String category  = (m instanceof CompetitiveMember) ? "COMPETITIVE" : "EXERCISE";
         String discipline = "";
-        if (m instanceof  CompetitiveMember) {
+
+        // Kun CompetitiveMember har en discipline
+        if (m instanceof CompetitiveMember) {
             discipline = ((CompetitiveMember) m).getDiscipline().name();
         }
+
         return m.getMemberID() + DELIMITER
-                + m.getName()     + DELIMITER
-                + m.getAge()      + DELIMITER
+                + m.getName()        + DELIMITER
+                + m.getAge()         + DELIMITER
                 + m.isActiveMember() + DELIMITER
-                + category        + DELIMITER
+                + category           + DELIMITER
                 + discipline;
     }
 }
