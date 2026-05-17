@@ -53,6 +53,43 @@ public class TrainingController {
         }
         return new ArrayList<>();
     }
+    /**
+     * Henter træningsevalueringer for en spiller fra en given dato og frem.
+     * Standard brug: LocalDate.now().minusWeeks(2) for sidste 2 uger.
+     *
+     * @param member    spilleren hvis evalueringer hentes
+     * @param startDate startdatoen for perioden
+     * @return liste af træningsevalueringer inden for perioden
+     */
+    public ArrayList<Training> getRecentTrainingScores(CompetitiveMember member, LocalDate startDate) {
+        ArrayList<Training> recentScores = new ArrayList<>();
+        for (Training training : getTrainingResultsForMember(member)) {
+            if (!training.getDate().isBefore(startDate)) {
+                recentScores.add(training);
+            }
+        }
+        return recentScores;
+    }
+
+    /**
+     * Beregner gennemsnitlig træningsscore for en spiller fra en given dato og frem.
+     * Standard brug: LocalDate.now().minusWeeks(2) for sidste 2 uger.
+     *
+     * @param member    spilleren hvis gennemsnit beregnes
+     * @param startDate startdatoen for perioden
+     * @return gennemsnitlig score eller 0.0 hvis ingen evalueringer findes
+     */
+    public double getAverageScoreSince(CompetitiveMember member, LocalDate startDate) {
+        ArrayList<Training> recentScores = getRecentTrainingScores(member, startDate);
+        if (recentScores.isEmpty()) {
+            return 0.0;
+        }
+        double total = 0;
+        for (Training training : recentScores) {
+            total += training.getScore();
+        }
+        return total / recentScores.size();
+    }
 
     /**
      * Henter eller opretter en træningsoversigt for en spiller.
