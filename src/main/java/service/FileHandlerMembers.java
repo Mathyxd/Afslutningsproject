@@ -74,15 +74,18 @@ public class FileHandlerMembers implements FileHandler {
 
         switch (category) {
             case "COMPETITIVE": {
-                // Konkurrencespillere skal have en disciplin
                 if (parts.length < 6 || parts[5].isBlank()) {
                     throw new IllegalArgumentException("COMPETITIVE-medlem mangler disciplin");
                 }
                 Discipline discipline = Discipline.valueOf(parts[5].trim().toUpperCase());
-                return new CompetitiveMember(name, age, memberID, activeMember, discipline);
+                CompetitiveMember m = new CompetitiveMember(name, age, memberID, activeMember, discipline);
+                m.setMemberID(memberID);
+                return m;
             }
             case "EXERCISE": {
-                return new ExerciseMember(name, age, memberID, activeMember);
+                ExerciseMember m = new ExerciseMember(name, age, memberID, activeMember);
+                m.setMemberID(memberID);
+                return m;
             }
             default:
                 throw new IllegalArgumentException("Ukendt kategori: " + category);

@@ -61,6 +61,10 @@ public abstract class Member implements Comparable<Member> {
         this.age = age;
     }
 
+    public void setMemberID(int memberID) {
+        this.memberID = memberID;
+    }
+
     //metoder
     public boolean isActiveMember() {
         return activeMember;
