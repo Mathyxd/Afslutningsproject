@@ -15,7 +15,7 @@ public class MemberController {
     // ArrayListe over medlemmer ligger her
     private ArrayList<Member> memberList = new ArrayList<>();
     private static int nextID = 1000;
-    UserInput userInput;
+    UserInput userInput = new UserInput();
 
     // Opret Medlem
 
