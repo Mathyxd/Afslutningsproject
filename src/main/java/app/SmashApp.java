@@ -10,25 +10,26 @@ public class SmashApp {
         // menu kan i fremtiden skrives pænere ud
         System.out.println("Vil du se mulighederne for 1. formanden, 2. kassereren eller 3. træneren?");
 
-        int limit = 3;
-        int input = userInput.inputInt(limit);
+        int input = userInput.inputInt(3);
 
-        switch (input){
-            case 1:
-                ChairpersonUI chairpersonUI = new ChairpersonUI();
-                chairpersonUI.runProgram();
-                break;
-            case 2:
-                TreasureUI treasureUI = new TreasureUI();
-                treasureUI.runProgram();
-                break;
-            case 3:
-                CoachUI coachUI = new CoachUI();
-                coachUI.runProgram();
-                break;
+        InterfaceUI ui = null;
+
+        while (ui == null) {
+
+            switch (input) {
+                case 1:
+                    ui = new ChairpersonUI();
+                    break;
+                case 2:
+                    ui = new TreasureUI();
+                    break;
+                case 3:
+                    ui = new CoachUI();
+                    break;
+            }
         }
 
-
+            ui.runProgram();
 
     }
 }

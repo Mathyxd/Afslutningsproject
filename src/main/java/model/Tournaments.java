@@ -1,7 +1,7 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.EnumSet;
 
 /**
  * Repræsenterer en oversigt over turneringer for en konkurrencespiller.
@@ -69,18 +69,18 @@ public class Tournaments {
                 .orElse(0);
     }
 
-    /**
-     * Henter spillerens bedste placering inden for en specifik disciplin.
-     *
+     /**
+     * Henter spillerens bedste placering inden for en specifik disciplin.*
      * @param discipline disciplinen der filtreres på
      * @return bedste placering i disciplinen eller 0 hvis ingen turneringer findes
-     */
+     **/
     public int getBestPlacementByDiscipline(Discipline discipline) {
         return getTournamentsByDiscipline(discipline).stream()
                 .mapToInt(Tournament::getPlayerPlacement)
                 .min()
                 .orElse(0);
     }
+
 
     // Getters
     public CompetitiveMember getMember() { return member; }

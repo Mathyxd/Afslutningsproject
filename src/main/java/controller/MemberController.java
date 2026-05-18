@@ -7,9 +7,10 @@ import model.Member;
 import ui.UserInput;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 
-import static validation.InputValidator.validateAge;
-import static validation.InputValidator.validateName;
+import static validation.InputValidator.*;
+import static validation.InputValidator.validateDiscipline;
 
 public class MemberController {
     // ArrayListe over medlemmer ligger her
@@ -24,6 +25,34 @@ public class MemberController {
         System.out.println(" Oprettet: " + member.getName()
                 + " | ID: "   + member.getMemberID()
                 + " | Type: " + member.getMemberType());
+    }
+
+    /**
+     *
+     * @return returnerer et EnumSet af 1 til 3 discipliner.
+     */
+    public EnumSet<Discipline> addDiscipline() {
+        System.out.println("Hvor mange discipliner konkurrer spilleren i?");
+        int disciplineNumber = userInput.inputInt(3);
+
+        switch (disciplineNumber) {
+            case 1:
+                System.out.println("Hvilke disciplin?");
+                String disp = userInput.inputString();
+                validateDiscipline(disp);
+                return EnumSet.of(Discipline.valueOf(disp));
+            case 2:
+                System.out.println("Første disciplin?");
+                String disp1 = userInput.inputString();
+                validateDiscipline(disp1);
+                System.out.println("Anden disciplin?");
+                String disp2 = userInput.inputString();
+                validateDiscipline(disp2);
+                return EnumSet.of(Discipline.valueOf(disp1), Discipline.valueOf(disp2));
+            case 3:
+                return EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE, Discipline.MIX_DOUBLE);
+        }
+        return null;
     }
 
     // Fjerner via MedlemsID
@@ -116,10 +145,10 @@ public class MemberController {
         if (member instanceof ExerciseMember){
 
             System.out.println("Hvilken disciplin spiller konkurrencespilleren? Single, double eller mix double.");
-            Discipline discipline = Discipline.DOUBLE; // TEMPORARY! Det skal ÆNDRES!
+            EnumSet<Discipline> disciplines = addDiscipline();
 
             Member changedMember = new CompetitiveMember(member.getName(), member.getAge(),
-                    member.getMemberID(), member.isActiveMember(), discipline);
+                    member.getMemberID(), member.isActiveMember(), disciplines);
 
             removeMemberByID(member.getMemberID());
             addMember(changedMember);

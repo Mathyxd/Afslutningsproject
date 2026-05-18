@@ -1,5 +1,7 @@
 package ui;
 
+import model.Discipline;
+
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -9,7 +11,7 @@ public class UserInput {
     // scanneren tager imod en String og tjekker, om den opfylder de krav, alle Strings fra scanneren skal
     // (indtil videre at de ikke er nuLl) og smider enten en exception eller returneer inputtet
     public String inputString() {
-        String input = scanner.nextLine();
+        String input = scanner.nextLine().toLowerCase();
         if (input == null || input.isEmpty()) {
             throw new exceptionhandler.ValidationException("Input må ikke være tomt");
         } else {
@@ -39,4 +41,5 @@ public class UserInput {
             throw new exceptionhandler.ValidationException("Input skal være ja eller nej");
         }
     }
+
 }

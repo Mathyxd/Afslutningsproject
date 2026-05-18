@@ -5,6 +5,7 @@ import model.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumSet;
 
 /**
  * Controller ansvarlig for håndtering af turneringer i systemet.
@@ -132,8 +133,8 @@ public class TournamentController {
         for (Tournaments t : allTournaments) {
             CompetitiveMember member = t.getMember();
 
-            // Filtrer på junior/senior og disciplin
-            if (member.isJunior() == junior && member.getDiscipline() == discipline) {
+            // Filtrer på junior/senior og disciplin (tjekker om den givne disciplin, er en del af EnumSettet)
+            if (member.isJunior() == junior && member.getDisciplines().contains(discipline)) {
                 players.add(member);
             }
         }

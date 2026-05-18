@@ -21,4 +21,12 @@ public class InputValidator {
             throw new ValidationException("Medlems ID'et skal være mindst 1000");
         }
     }
+
+    public static String validateDiscipline(String discipline){
+        if (!discipline.equals("single") && !discipline.equals("double") &&
+                !discipline.equals("mix double") && !discipline.equals("mix_double")){
+            throw new ValidationException("Disciplin skal være single, double eller mix double");
+        }
+        return discipline.replaceAll(" ","_");
+    }
 }

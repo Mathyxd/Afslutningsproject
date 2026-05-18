@@ -1,14 +1,17 @@
 package model;
 
-public class CompetitiveMember extends Member {
-    private Discipline discipline;
+import java.util.EnumSet;
 
-    public CompetitiveMember(String name, int age, int memberID, boolean activeMember, Discipline discipline) {
+public class CompetitiveMember extends Member {
+    // private Discipline discipline;
+    private EnumSet<Discipline> disciplines;
+
+    public CompetitiveMember(String name, int age, int memberID, boolean activeMember, EnumSet<Discipline> disciplines) {
         super(name, age, memberID, activeMember);
-        this.discipline = discipline;
+        this.disciplines = disciplines;
     }
-    public Discipline getDiscipline() {return discipline;}
-    public void setDiscipline(Discipline discipline) {this.discipline = discipline;}
+    public EnumSet<Discipline> getDisciplines() {return disciplines;}
+    public void setDisciplines(EnumSet<Discipline> disciplines) {this.disciplines = disciplines;}
 
 
     @Override

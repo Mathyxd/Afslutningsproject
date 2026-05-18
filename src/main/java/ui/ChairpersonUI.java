@@ -54,6 +54,9 @@ public class ChairpersonUI implements InterfaceUI {
     /* metode, der opretter et medlem. Input fra brugeren tages imod af UserInput klassen, sådan at vi kun
        skal lave den pågældende type exception handling et enkelt sted. */
 
+    /**
+     * @return returnerer et medlem, med de givne attributter
+     */
     public static Member createMember() {
 
         System.out.println("Navn?");
@@ -61,8 +64,7 @@ public class ChairpersonUI implements InterfaceUI {
         validateName(name);
 
         System.out.println("Alder?");
-        int limit = 120;
-        int age = userInput.inputInt(limit);
+        int age = userInput.inputInt(120);
         validateAge(age);
 
         System.out.println("Har medlemmet et aktivt medlemskab, ja eller nej?");
@@ -72,17 +74,12 @@ public class ChairpersonUI implements InterfaceUI {
         boolean isCompetitve = userInput.inputBool();
 
         if (isCompetitve) {
-            System.out.println("Hvilken disciplin spiller konkurrencespilleren? Single, double eller mix double.");
-            Discipline discipline = Discipline.DOUBLE; // TEMPORARY! Det skal ÆNDRES!
-
-            /* Oprettelse af konkurrencespiller. */
+            EnumSet<Discipline> discipline = memberController.addDiscipline();
             return new CompetitiveMember(name, age, MemberController.generateID(), isActive, discipline);
         } else {
             // oprettelse af motionist.
             return new ExerciseMember(name, age, MemberController.generateID(), isActive);
         }
-
-
     }
 
     public static void changeMember() {

@@ -5,6 +5,7 @@ import controller.MemberController;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 public class FileHandlerMembers implements FileHandler {
 
@@ -77,8 +78,8 @@ public class FileHandlerMembers implements FileHandler {
                 if (parts.length < 6 || parts[5].isBlank()) {
                     throw new IllegalArgumentException("COMPETITIVE-medlem mangler disciplin");
                 }
-                Discipline discipline = Discipline.valueOf(parts[5].trim().toUpperCase());
-                CompetitiveMember m = new CompetitiveMember(name, age, memberID, activeMember, discipline);
+                EnumSet<Discipline> disciplines = EnumSet.of(Discipline.valueOf((parts[5].trim().toUpperCase())));
+                CompetitiveMember m = new CompetitiveMember(name, age, memberID, activeMember, disciplines);
                 m.setMemberID(memberID);
                 return m;
             }
@@ -129,7 +130,7 @@ public class FileHandlerMembers implements FileHandler {
 
         // Kun CompetitiveMember har en discipline
         if (m instanceof CompetitiveMember) {
-            discipline = ((CompetitiveMember) m).getDiscipline().name();
+            discipline = String.valueOf(((CompetitiveMember) m).getDisciplines());
         }
 
         return m.getMemberID() + DELIMITER
