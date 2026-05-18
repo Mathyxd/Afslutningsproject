@@ -15,15 +15,20 @@ public class SmashApp {
 
         switch (input){
             case 1:
-                ChairpersonUI.runProgram();
+                ChairpersonUI chairpersonUI = new ChairpersonUI();
+                chairpersonUI.runProgram();
                 break;
             case 2:
-                TreasureUI.runProgram();
+                TreasureUI treasureUI = new TreasureUI();
+                treasureUI.runProgram();
                 break;
             case 3:
-                CoachUI.runProgram();
+                CoachUI coachUI = new CoachUI();
+                coachUI.runProgram();
                 break;
         }
+
+
 
     }
 }

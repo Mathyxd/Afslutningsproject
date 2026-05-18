@@ -13,11 +13,12 @@ public class ChairpersonUI implements InterfaceUI {
     static MemberController memberController = new MemberController();
     static FileHandlerMembers fileHandlerMembers = new FileHandlerMembers(memberController);
 
-    public static void runProgram() {
+    @Override
+    public void runProgram() {
         fileHandlerMembers.loadFromFile();
         boolean isRunning = true;
         while (isRunning) {
-            System.out.println("Vælg en mulighed. 1. Vis alle medlemmer. 2. Tilføj et medlem. 3. Ændr et medlem.");
+            System.out.println("Vælg en mulighed. 1. Vis alle medlemmer. 2. Tilføj et medlem. 3. Ændr et medlem. 4. Luk program");
 
             /* bruger UserInput klassen til at tage imod input. Tallet det får med er det højeste tal,
             der i denne kontekst kan bruges til noget. Så pt 4, fordi der er 4 menupunkter */
@@ -122,7 +123,8 @@ public class ChairpersonUI implements InterfaceUI {
                         fileHandlerMembers.saveToFile();
                         break;
                     case 5:
-                        // discipline
+                        //
+
                     case 6:
                         running = false;
                 }

@@ -13,7 +13,9 @@ public class TreasureUI implements InterfaceUI {
     static PaymentController paymentController = new PaymentController();
     static MemberController memberController = new MemberController();
 
-    public static void runProgram() {
+
+    @Override
+    public void runProgram() {
 
         boolean isRunning = true;
         while (isRunning) {

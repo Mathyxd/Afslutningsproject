@@ -14,7 +14,9 @@ public class CoachUI implements InterfaceUI {
     static TrainingController trainingController = new TrainingController();
     static MemberController memberController = new MemberController();
 
-    public static void runProgram() {
+
+    @Override
+    public void runProgram() {
 
         boolean isRunning = true;
         while (isRunning) {
