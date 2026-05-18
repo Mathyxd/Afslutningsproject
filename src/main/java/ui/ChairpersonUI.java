@@ -107,15 +107,19 @@ public class ChairpersonUI implements InterfaceUI {
                 switch (input) {
                     case 1:
                         memberController.changeName(member);
+                        fileHandlerMembers.saveToFile();
                         break;
                     case 2:
                         memberController.changeAge(member);
+                        fileHandlerMembers.saveToFile();
                         break;
                     case 3:
                         memberController.changeStatus(member);
+                        fileHandlerMembers.saveToFile();
                         break;
                     case 4:
                         memberController.changeType(member);
+                        fileHandlerMembers.saveToFile();
                         break;
                     case 5:
                         // discipline

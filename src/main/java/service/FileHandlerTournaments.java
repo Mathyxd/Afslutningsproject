@@ -65,8 +65,8 @@ public class FileHandlerTournaments implements FileHandler {
         }
         int memberID = Integer.parseInt(parts[0].trim());
         String tournamentName = parts[1].trim();
-        int ranking = Integer.parseInt(parts[2].trim());
-        String matchResult = parts[3].trim();
+        int tournamentRanking = Integer.parseInt(parts[2].trim());
+        int playerPlacement = Integer.parseInt(parts[3].trim());
         LocalDate date = LocalDate.parse(parts[4].trim());
         Discipline discipline = Discipline.valueOf(parts[5].trim().toUpperCase());
 
@@ -77,7 +77,7 @@ public class FileHandlerTournaments implements FileHandler {
         if (!(member instanceof CompetitiveMember)) {
             throw new IllegalArgumentException("Medlem med ID " + memberID + " er ikke en konkurrencespiller");
         }
-        tournamentController.createTournament((CompetitiveMember) member, tournamentName, ranking, matchResult, date, discipline);
+        tournamentController.createTournament((CompetitiveMember) member, tournamentName, tournamentRanking, playerPlacement, date, discipline);
     }
 
     public void saveToFile() {
@@ -113,8 +113,8 @@ public class FileHandlerTournaments implements FileHandler {
     private String formatTournament(int memberID, Tournament t) {
         return memberID + DELIMITER
                 + t.getTournamentName() + DELIMITER
-                + t.getRanking() + DELIMITER
-                + t.getMatchResult() + DELIMITER
+                + t.getTournamentRanking() + DELIMITER
+                + t.getPlayerPlacement() + DELIMITER
                 + t.getDate() + DELIMITER
                 + t.getDiscipline().name();
     }
