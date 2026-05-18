@@ -60,7 +60,7 @@ public class FileHandlerTournaments implements FileHandler {
     private void parseLine(String line) {
         String[] parts = line.split(DELIMITER, -1);
 
-        if (parts.length <6) {
+        if (parts.length < 6) {
             throw new IllegalArgumentException("For få kolonner (" + parts.length + ")");
         }
         int memberID = Integer.parseInt(parts[0].trim());
@@ -80,4 +80,42 @@ public class FileHandlerTournaments implements FileHandler {
         tournamentController.createTournament((CompetitiveMember) member, tournamentName, ranking, matchResult, date, discipline);
     }
 
+    public void saveToFile() {
+        long startTime = System.nanoTime();
+
+        File file = new File(FILE_PATH);
+        if (file.getParentFile() != null) {
+            file.getParentFile().mkdirs();
+        }
+        int saved = 0;
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+
+            writer.write("memberID" + DELIMITER + "tournamentName" + DELIMITER + "ranking"
+                    + DELIMITER + "matchResult" + DELIMITER + "date" + DELIMITER + "discipline");
+            writer.newLine();
+
+            for (Tournaments tournaments : tournamentController.getAllTournaments()) {
+                int memberID = tournaments.getMember().getMemberID();
+                for (Tournament t : tournaments.getTournaments()) {
+                    writer.write(formatTournament(memberID, t));
+                    writer.newLine();
+                    saved++;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Kunne ikke gemme tournaments.csv: " + e.getMessage());
+        }
+        long elapsed = System.nanoTime() - startTime;
+        System.out.printf("Gemt %d turneringer på %.2f ms (buffered)%n", saved, elapsed / 1_000_000.0);
+    }
+
+    private String formatTournament(int memberID, Tournament t) {
+        return memberID + DELIMITER
+                + t.getTournamentName() + DELIMITER
+                + t.getRanking() + DELIMITER
+                + t.getMatchResult() + DELIMITER
+                + t.getDate() + DELIMITER
+                + t.getDiscipline().name();
+    }
 }
